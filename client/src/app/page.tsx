@@ -5,8 +5,8 @@ import { useDraw } from '../hooks/useDraw'
 import { ChromePicker } from 'react-color'
 
 import { io } from 'socket.io-client'
-import { drawLine } from '../utils/drawLine'
 const socket = io('http://localhost:3001')
+import { drawLine } from '../utils/drawLine'
 
 interface pageProps {}
 
@@ -18,6 +18,7 @@ type DrawLineProps = {
 
 const page: FC<pageProps> = ({}) => {
   const [color, setColor] = useState<string>('#000')
+  const [togglePicker,setTogglePicker] = useState(false)
   const { canvasRef, onMouseDown, clear } = useDraw(createLine)
 
   useEffect(() => {
@@ -62,20 +63,65 @@ const page: FC<pageProps> = ({}) => {
 
   return (
     <div className='w-screen h-screen bg-white flex justify-center items-center'>
-      <div className='flex flex-col gap-10 pr-10'>
-        <ChromePicker color={color} onChange={(e) => setColor(e.hex)} />
+      <div className='flex flex-col gap-10 top-10 absolute left-8'>
         <button
           type='button'
-          className='p-2 rounded-md border border-black'
+          className='p-2 rounded-md border-none bg-green-500  text-white'
           onClick={() => socket.emit('clear')}>
           Clear canvas
         </button>
+
+        {/* {
+          togglePicker ? 
+          <ChromePicker color={color} onChange={(e) => setColor(e.hex)} />
+          : null
+        }
+        <div>
+          {
+            togglePicker ? <button  type='button'
+            className='p-2 rounded-md border-none bg-green-500  text-white' onClick={()=>setTogglePicker(false)}>Close</button>
+            :
+         <button  type='button'
+         className='p-2 rounded-md border-none bg-green-500  text-white' onClick={()=>setTogglePicker(true)}>Color Picker</button>
+          }
+            </div> */}
+
+<div className="relative">
+        <button
+          type="button"
+          className="p-2 rounded-md border-none bg-green-500 text-white"
+          onClick={() => setTogglePicker(!togglePicker)}
+        >
+          Color Picker
+        </button>
+
+        {togglePicker && (
+          <div className="absolute top-0 left-0 z-10">
+            <div
+              className="fixed inset-0"
+              onClick={() => setTogglePicker(false)}
+            />
+            <div className="flex flex-col items-center gap-4 p-4 rounded-lg shadow-lg bg-slate-200">
+              <ChromePicker color={color} onChange={(e) => setColor(e.hex)} />
+              <button
+                type="button"
+                className="p-2 cursor-pointer rounded-md border-none bg-green-500 text-white"
+                onClick={() => setTogglePicker(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+
       </div>
       <canvas
         ref={canvasRef}
         onMouseDown={onMouseDown}
-        width={750}
-        height={750}
+        width={1200}
+        height={650}
         className='border border-black rounded-md'
       />
     </div>
@@ -83,3 +129,4 @@ const page: FC<pageProps> = ({}) => {
 }
 
 export default page
+
