@@ -62,7 +62,11 @@ const page: FC<pageProps> = ({}) => {
   }
 
   return (
+    <>
     <div className='w-screen h-screen bg-white flex justify-center items-center'>
+         <button type='button' className={`bg-blue-600 rounded-xl bottom-10 right-4 w-fit p-4`}>
+      {color}
+      </button>
       <div className='flex flex-col gap-10 top-10 absolute left-8'>
         <button
           type='button'
@@ -77,21 +81,21 @@ const page: FC<pageProps> = ({}) => {
           : null
         }
         <div>
-          {
-            togglePicker ? <button  type='button'
-            className='p-2 rounded-md border-none bg-green-500  text-white' onClick={()=>setTogglePicker(false)}>Close</button>
-            :
-         <button  type='button'
-         className='p-2 rounded-md border-none bg-green-500  text-white' onClick={()=>setTogglePicker(true)}>Color Picker</button>
+        {
+          togglePicker ? <button  type='button'
+          className='p-2 rounded-md border-none bg-green-500  text-white' onClick={()=>setTogglePicker(false)}>Close</button>
+          :
+          <button  type='button'
+          className='p-2 rounded-md border-none bg-green-500  text-white' onClick={()=>setTogglePicker(true)}>Color Picker</button>
           }
-            </div> */}
+        </div> */}
 
 <div className="relative">
         <button
           type="button"
           className="p-2 rounded-md border-none bg-green-500 text-white"
           onClick={() => setTogglePicker(!togglePicker)}
-        >
+          >
           Color Picker
         </button>
 
@@ -100,23 +104,22 @@ const page: FC<pageProps> = ({}) => {
             <div
               className="fixed inset-0"
               onClick={() => setTogglePicker(false)}
-            />
+              />
             <div className="flex flex-col items-center gap-4 p-4 rounded-lg shadow-lg bg-slate-200">
               <ChromePicker color={color} onChange={(e) => setColor(e.hex)} />
               <button
                 type="button"
                 className="p-2 cursor-pointer rounded-md border-none bg-green-500 text-white"
                 onClick={() => setTogglePicker(false)}
-              >
+                >
                 Close
               </button>
             </div>
           </div>
         )}
       </div>
-
-
       </div>
+   
       <canvas
         ref={canvasRef}
         onMouseDown={onMouseDown}
@@ -125,6 +128,7 @@ const page: FC<pageProps> = ({}) => {
         className='border border-black rounded-md'
       />
     </div>
+        </>
   )
 }
 
